@@ -1,5 +1,5 @@
 # dotenv environment variable files
-.git aenv
+
 .env.development.local
 .env.test.local
 .env.production.local

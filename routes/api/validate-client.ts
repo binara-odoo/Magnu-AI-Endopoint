@@ -1,14 +1,16 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Verificar que las variables de entorno estén definidas
+// Obtener variables de entorno
 const supabaseUrl = Deno.env.get('SUPABASE_URL')
 const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Las variables de entorno SUPABASE_URL y SUPABASE_ANON_KEY son requeridas. Por favor, crea un archivo .env con estas variables.')
+// Función para crear cliente Supabase con validación
+function createSupabaseClient() {
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Las variables de entorno SUPABASE_URL y SUPABASE_ANON_KEY son requeridas.')
+  }
+  return createClient(supabaseUrl, supabaseAnonKey)
 }
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
 // Función GET para testing y verificación del endpoint
 export async function GET(req: Request) {
@@ -51,6 +53,9 @@ export async function POST(req: Request) {
     console.log('Phone:', phone)
     console.log('Client Data (raw):', clientData)
     console.log('Client Data type:', typeof clientData)
+
+    // Crear cliente Supabase
+    const supabase = createSupabaseClient()
 
     let duplicates: {
       email: any | null;

@@ -1,9 +1,46 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(
-  Deno.env.get('SUPABASE_URL')!,
-  Deno.env.get('SUPABASE_ANON_KEY')!
-)
+// Verificar que las variables de entorno estén definidas
+const supabaseUrl = Deno.env.get('SUPABASE_URL')
+const supabaseAnonKey = Deno.env.get('SUPABASE_ANON_KEY')
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Las variables de entorno SUPABASE_URL y SUPABASE_ANON_KEY son requeridas. Por favor, crea un archivo .env con estas variables.')
+}
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// Función GET para testing y verificación del endpoint
+export async function GET(req: Request) {
+  try {
+    return new Response(JSON.stringify({
+      message: "Endpoint de validación de clientes funcionando correctamente",
+      status: "active",
+      timestamp: new Date().toISOString(),
+      usage: {
+        method: "POST",
+        endpoint: "/api/validate-client",
+        requiredFields: ["email", "phone"],
+        optionalFields: ["clientData"],
+        example: {
+          email: "test@example.com",
+          phone: "123456789",
+          clientData: {
+            name: "Test User",
+            company: "Test Company"
+          }
+        }
+      }
+    }), {
+      headers: { 'Content-Type': 'application/json' }
+    })
+  } catch (error) {
+    return new Response(JSON.stringify({ error: 'Error en GET' }), { 
+      status: 500,
+      headers: { 'Content-Type': 'application/json' }
+    })
+  }
+}
 
 export async function POST(req: Request) {
   try {

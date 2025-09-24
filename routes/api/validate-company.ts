@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export const handler: Handlers = {
   async POST(req) {
     try {
-      const { email, phone, name, companyData, website, industry, size, city, country, owner_name } = await req.json();
+      const { email, phone, name, companyData } = await req.json();
 
       console.log("=== COMPANY VALIDATION REQUEST ===");
       console.log("Email:", email);
@@ -103,26 +103,27 @@ export const handler: Handlers = {
           } catch (e) {
             console.error("❌ Error parseando companyData:", e);
 
-            const nameMatch = companyData.match(/"name":\s*"([^"]+)"/);
-            const emailMatch = companyData.match(/"email":\s*"([^"]+)"/);
-            const phoneMatch = companyData.match(/"phone":\s*"([^"]+)"/);
-            const websiteMatch = companyData.match(/"website":\s*"([^"]+)"/);
-            const industryMatch = companyData.match(/"industry":\s*"([^"]+)"/);
-            const sizeMatch = companyData.match(/"size":\s*"([^"]+)"/);
-            const cityMatch = companyData.match(/"city":\s*"([^"]+)"/);
-            const countryMatch = companyData.match(/"country":\s*"([^"]+)"/);
-            const ownerNameMatch = companyData.match(/"owner_name":\s*"([^"]+)"/);
+            // Extraer datos del string usando regex más robusto
+            const nameMatch = companyData.match(/name:\s*([^,]+)/);
+            const emailMatch = companyData.match(/email:\s*([^,]+)/);
+            const phoneMatch = companyData.match(/phone:\s*([^,]+)/);
+            const websiteMatch = companyData.match(/website:\s*([^,]+)/);
+            const industryMatch = companyData.match(/industry:\s*([^,]+)/);
+            const sizeMatch = companyData.match(/size:\s*([^,]+)/);
+            const cityMatch = companyData.match(/city:\s*([^,]+)/);
+            const countryMatch = companyData.match(/country:\s*([^,]+)/);
+            const ownerNameMatch = companyData.match(/owner_name:\s*([^,]+)/);
 
             parsedCompanyData = {
-              name: nameMatch ? nameMatch[1] : undefined,
-              email: emailMatch ? emailMatch[1] : undefined,
-              phone: phoneMatch ? phoneMatch[1] : undefined,
-              website: websiteMatch ? websiteMatch[1] : undefined,
-              industry: industryMatch ? industryMatch[1] : undefined,
-              size: sizeMatch ? sizeMatch[1] : undefined,
-              city: cityMatch ? cityMatch[1] : undefined,
-              country: countryMatch ? countryMatch[1] : undefined,
-              owner_name: ownerNameMatch ? ownerNameMatch[1] : undefined,
+              name: nameMatch ? nameMatch[1].trim() : undefined,
+              email: emailMatch ? emailMatch[1].trim() : undefined,
+              phone: phoneMatch ? phoneMatch[1].trim() : undefined,
+              website: websiteMatch ? websiteMatch[1].trim() : undefined,
+              industry: industryMatch ? industryMatch[1].trim() : undefined,
+              size: sizeMatch ? sizeMatch[1].trim() : undefined,
+              city: cityMatch ? cityMatch[1].trim() : undefined,
+              country: countryMatch ? countryMatch[1].trim() : undefined,
+              owner_name: ownerNameMatch ? ownerNameMatch[1].trim() : undefined,
             };
             console.log("✅ CompanyData extraído del string:", parsedCompanyData);
           }
@@ -132,12 +133,12 @@ export const handler: Handlers = {
           name: parsedCompanyData.name || parsedCompanyData.nombre || name,
           email: parsedCompanyData.email || parsedCompanyData.correo || email,
           phone: parsedCompanyData.phone || parsedCompanyData.telefono || phone,
-          website: parsedCompanyData.website || parsedCompanyData.sitio_web || website || "",
-          industry: parsedCompanyData.industry || parsedCompanyData.industria || industry || "",
-          size: parsedCompanyData.size || parsedCompanyData.tamaño || size || "",
-          city: parsedCompanyData.city || parsedCompanyData.ciudad || city || "",
-          country: parsedCompanyData.country || parsedCompanyData.país || country || "",
-          owner_name: parsedCompanyData.owner_name || parsedCompanyData.nombre_propietario || owner_name || "",
+          website: parsedCompanyData.website || parsedCompanyData.sitio_web || "",
+          industry: parsedCompanyData.industry || parsedCompanyData.industria || "",
+          size: parsedCompanyData.size || parsedCompanyData.tamaño || "",
+          city: parsedCompanyData.city || parsedCompanyData.ciudad || "",
+          country: parsedCompanyData.country || parsedCompanyData.país || "",
+          owner_name: parsedCompanyData.owner_name || parsedCompanyData.nombre_propietario || "",
           stage: "prospect",
           notes: "",
         };

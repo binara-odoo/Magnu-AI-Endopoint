@@ -129,17 +129,17 @@ export const handler: Handlers = {
         }
 
         const registrationData = {
-          name: parsedCompanyData.name || parsedCompanyData.nombre || email,
+          name: parsedCompanyData.name || parsedCompanyData.nombre || name,
           email: parsedCompanyData.email || parsedCompanyData.correo || email,
           phone: parsedCompanyData.phone || parsedCompanyData.telefono || phone,
-          website: parsedCompanyData.website || parsedCompanyData.sitio_web || "",
-          industry: parsedCompanyData.industry || parsedCompanyData.industria || "",
-          size: parsedCompanyData.size || parsedCompanyData.tamaño || "",
-          city: parsedCompanyData.city || parsedCompanyData.ciudad || "",
-          country: parsedCompanyData.country || parsedCompanyData.país || "",
-          owner_name: parsedCompanyData.owner_name || parsedCompanyData.nombre_propietario || "",
+          website: parsedCompanyData.website || parsedCompanyData.sitio_web || null,
+          industry: parsedCompanyData.industry || parsedCompanyData.industria || null,
+          size: parsedCompanyData.size || parsedCompanyData.tamaño || null,
+          city: parsedCompanyData.city || parsedCompanyData.ciudad || null,
+          country: parsedCompanyData.country || parsedCompanyData.país || null,
+          owner_name: parsedCompanyData.owner_name || parsedCompanyData.nombre_propietario || null,
           stage: "prospect",
-          notes: "",
+          notes: null,
         };
 
         console.log("✅ Empresa válida, datos para registro:", registrationData);

@@ -9,12 +9,20 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export const handler: Handlers = {
   async POST(req) {
     try {
-      const { email, phone, name, companyData } = await req.json();
+      const requestBody = await req.json();
+      const { email, phone, name, companyData, website, industry, size, city, country, owner_name } = requestBody;
 
       console.log("=== COMPANY VALIDATION REQUEST ===");
+      console.log("Full request body:", JSON.stringify(requestBody, null, 2));
       console.log("Email:", email);
       console.log("Phone:", phone);
       console.log("Name:", name);
+      console.log("Website:", website);
+      console.log("Industry:", industry);
+      console.log("Size:", size);
+      console.log("City:", city);
+      console.log("Country:", country);
+      console.log("Owner name:", owner_name);
       console.log("Company Data (raw):", companyData);
       console.log("Company Data type:", typeof companyData);
 
@@ -133,12 +141,12 @@ export const handler: Handlers = {
           name: parsedCompanyData.name || parsedCompanyData.nombre || name,
           email: parsedCompanyData.email || parsedCompanyData.correo || email,
           phone: parsedCompanyData.phone || parsedCompanyData.telefono || phone,
-          website: parsedCompanyData.website || parsedCompanyData.sitio_web || "",
-          industry: parsedCompanyData.industry || parsedCompanyData.industria || "",
-          size: parsedCompanyData.size || parsedCompanyData.tamaño || "",
-          city: parsedCompanyData.city || parsedCompanyData.ciudad || "",
-          country: parsedCompanyData.country || parsedCompanyData.país || "",
-          owner_name: parsedCompanyData.owner_name || parsedCompanyData.nombre_propietario || "",
+          website: parsedCompanyData.website || parsedCompanyData.sitio_web || website || "",
+          industry: parsedCompanyData.industry || parsedCompanyData.industria || industry || "",
+          size: parsedCompanyData.size || parsedCompanyData.tamaño || size || "",
+          city: parsedCompanyData.city || parsedCompanyData.ciudad || city || "",
+          country: parsedCompanyData.country || parsedCompanyData.país || country || "",
+          owner_name: parsedCompanyData.owner_name || parsedCompanyData.nombre_propietario || owner_name || "",
           stage: "prospect",
           notes: "",
         };

@@ -9,7 +9,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
 export const handler: Handlers = {
   async POST(req) {
     try {
-      const { email, phone, name, companyData } = await req.json();
+      const { email, phone, name, companyData, website, industry, size, city, country, owner_name } = await req.json();
 
       console.log("=== COMPANY VALIDATION REQUEST ===");
       console.log("Email:", email);
@@ -132,14 +132,14 @@ export const handler: Handlers = {
           name: parsedCompanyData.name || parsedCompanyData.nombre || name,
           email: parsedCompanyData.email || parsedCompanyData.correo || email,
           phone: parsedCompanyData.phone || parsedCompanyData.telefono || phone,
-          website: parsedCompanyData.website || parsedCompanyData.sitio_web || null,
-          industry: parsedCompanyData.industry || parsedCompanyData.industria || null,
-          size: parsedCompanyData.size || parsedCompanyData.tamaño || null,
-          city: parsedCompanyData.city || parsedCompanyData.ciudad || null,
-          country: parsedCompanyData.country || parsedCompanyData.país || null,
-          owner_name: parsedCompanyData.owner_name || parsedCompanyData.nombre_propietario || null,
+          website: parsedCompanyData.website || parsedCompanyData.sitio_web || website || "",
+          industry: parsedCompanyData.industry || parsedCompanyData.industria || industry || "",
+          size: parsedCompanyData.size || parsedCompanyData.tamaño || size || "",
+          city: parsedCompanyData.city || parsedCompanyData.ciudad || city || "",
+          country: parsedCompanyData.country || parsedCompanyData.país || country || "",
+          owner_name: parsedCompanyData.owner_name || parsedCompanyData.nombre_propietario || owner_name || "",
           stage: "prospect",
-          notes: null,
+          notes: "",
         };
 
         console.log("✅ Empresa válida, datos para registro:", registrationData);
